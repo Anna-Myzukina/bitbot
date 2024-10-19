@@ -1,125 +1,245 @@
+import 'package:bitbot/utils/parallax_sensors_bg.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        backgroundColor: Colors.black38,
+        title: const Center(
+            child: Text(
+          'Parallax effect',
+          style: TextStyle(color: Colors.blue),
+        )),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+      body: Parallax(
+        sensor: ParallaxSensor.gyroscope,
+        layers: [
+          Layer(
+            sensitivity: 1,
+            image: const AssetImage('assets/images/bg_galaxy.jpg'),
+            preventCrop: true,
+          ),
+          Layer(
+              sensitivity: 7,
+              image: const AssetImage('assets/images/nebula.png'),
+              imageHeight: 200,
+              imageWidth: MediaQuery.of(context).size.width * 2,
+              preventCrop: true,
+              opacity: 0.1
+              ),
+          Layer(
+              sensitivity: 12,
+              image: const AssetImage('assets/images/stars2.png'),
+              preventCrop: true,
+              opacity: 0.2),
+          Layer(
+            sensitivity: 24,
+            image: const AssetImage('assets/images/fg_landscape_night.png'),
+            preventCrop: true,
+            imageFit: BoxFit.fitWidth
+            //opacity: 1
+            
+            //imageHeight: 150,
+            //imageWidth: double.infinity,
+            //imageFit: BoxFit.fitHeight,
+            //offset: const Offset(0, -490)
+              ),
+              ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 150),
+                child: Container(
+                  height: 400,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 2.0
+                    )
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(18.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Milk Way Galaxy',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text('The Milky Way is the galaxy that includes the Solar System, with the name describing the galaxy\'s appearance from Earth: a hazy band of light seen in the night sky formed from stars that cannot be individually distinguished by the naked eye',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18
+                         ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+        // [
+        //   Layer(
+        //     sensitivity: 1,
+        //     image: AssetImage('assets/images/bg_galaxy.jpg'),
+        //     preventCrop: true,
+        //     imageBlurValue: 1,
+        //   ),
+        //   Layer(
+        //       sensitivity: 7,
+        //       image: const AssetImage('assets/images/nebula.png'),
+        //       preventCrop: true,
+        //       opacity: 0.7),
+        //   Layer(
+        //       sensitivity: 10,
+        //       image: const AssetImage('assets/images/stars2.png'),
+        //       preventCrop: true,
+        //       opacity: 0.7),
+        //   Layer(
+        //     sensitivity: 7,
+        //     image: AssetImage('assets/images/fg_landscape_night.png'),
+        //     imageHeight: 200,
+            
+        //     //imageFit: BoxFit.fitHeight,
+        // ),
+      //   child: Padding(
+      //     padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 120),
+      //     child: Container(
+      //       height: MediaQuery.of(context).size.height / 2,
+      //       decoration: BoxDecoration(
+      //         borderRadius: BorderRadius.circular(20),
+      //         border: Border.all(
+      //           color: Colors.white,
+      //           width: 2.0
+      //         )
+      //       ),
+      //       child: const Padding(
+      //         padding: EdgeInsets.all(18.0),
+      //         child: Column(
+      //           crossAxisAlignment: CrossAxisAlignment.start,
+      //           children: [
+      //             Text('Milk Way Galaxy',
+      //             style: TextStyle(
+      //               color: Colors.white,
+      //               fontSize: 20
+      //               ),
+      //             ),
+      //             SizedBox(
+      //               height: 10,
+      //             ),
+      //             Text('The Milky Way is the galaxy that includes the Solar System, with the name describing the galaxy\'s appearance from Earth: a hazy band of light seen in the night sky formed from stars that cannot be individually distinguished by the naked eye',
+      //             style: TextStyle(
+      //               color: Colors.white,
+      //               fontSize: 18
+      //              ),
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     ),
+      //   ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+// class ParallaxEffectScreen extends StatefulWidget {
+//   @override
+//   _ParallaxEffectScreenState createState() => _ParallaxEffectScreenState();
+// }
+
+// class _ParallaxEffectScreenState extends State<ParallaxEffectScreen> {
+//   double _x = 0.0;
+//   double _y = 0.0;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     gyroscopeEvents.listen((GyroscopeEvent event) {
+//       setState(() {
+//         _x = (_x + event.x).clamp(-10.0, 10.0);
+//         _y = (_y + event.y).clamp(-10.0, 10.0);
+//       });
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Stack(
+//         children: [
+//           // Background Layer
+//           Positioned.fill(
+//             child: Transform.translate(
+//               offset: Offset(-_x * 2, -_y * 2),
+//               child: Image.asset(
+//                 'assets/images/sky.jpg',
+//                 fit: BoxFit.cover,
+//                 //width: MediaQuery.of(context).size.width * 2,
+//                 //height: MediaQuery.of(context).size.height,
+//               ),
+//             ),
+//           ),
+//           // Middle Layer
+//           Center(
+//             child: Container(
+//                decoration: BoxDecoration(
+//               border: Border.all(
+//                 color: Colors.white
+//               ),
+//               borderRadius: BorderRadius.circular(20)
+//             ),
+//               child: const Padding(
+//                 padding: EdgeInsets.all(18.0),
+//                 child: Text(
+//                   'Your Text Here',
+//                   style: TextStyle(color: Colors.white, fontSize: 24),
+//                   textAlign: TextAlign.center,
+//                 ),
+//               ),
+//             ),
+//           ),
+//           Positioned.fill(
+//             child: Transform.translate(
+//               offset: Offset(_x * 4, _y * 4),
+//               child: Image.asset(
+//                 'assets/images/sky_tr.png',
+//                 fit: BoxFit.cover,
+//                 //width: double.infinity,
+//                 //height: 100,
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
